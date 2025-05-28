@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    button {
+      margin-left: 5px;
+    }
+    input[type="text"], input[type="datetime-local"] {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<h1>To-Do List</h1>
+
+<input type="text" id="taskInput" placeholder="Enter a task">
+<input type="datetime-local" id="taskTime">
+<button  onclick ="addtask()">Add Task</button>
+<div id="taskList"></div>
+<script>
+  
+document.body.style.fontFamily = "Arial, sans-serif";
+document.body.innerHTML = `
+  <h2>To-Do List</h2>
+  <input id="taskInput" type="text" placeholder="Enter task" />
+  <input id="taskDateTime" type="datetime-local" />
+  <button id="addBtn">Add Task</button>
+  <ul id="taskList" style="list-style-type:none; padding:0;"></ul>
+`;
+
+
+document.getElementById("addBtn").addEventListener("click", addTask);
+
+function addTask() {
+  const taskText = document.getElementById("taskInput").value.trim();
+  const dateTime = document.getElementById("taskDateTime").value;
+
+  if (!taskText) {
+    alert("Task cannot be empty.");
+    return;
+  }
+
+  const li = document.createElement("li");
+  li.style.margin = "10px 0";
+  li.style.padding = "10px";
+  li.style.border = "1px solid #ccc";
+  li.style.borderRadius = "5px";
+
+  const taskSpan = document.createElement("span");
+  taskSpan.textContent = `${taskText} (${dateTime})`;
+  taskSpan.style.marginRight = "10px";
+
+
+  const completeBtn = document.createElement("button");
+  completeBtn.textContent = "✓";
+  completeBtn.title = "Mark Completed";
+  completeBtn.style.marginLeft = "10px";
+  completeBtn.onclick = () => {
+    taskSpan.style.textDecoration = "line-through";
+    taskSpan.style.color = "#888";
+  };
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "✏️";
+  editBtn.title = "Edit Task";
+  editBtn.style.marginLeft = "10px";
+  editBtn.onclick = () => {
+    const newText = prompt("Edit task:", taskText);
+    const newDate = prompt("Edit date/time:", dateTime);
+    if (newText && newDate) {
+      taskSpan.textContent = `${newText} (${newDate})`;
+    }
+  };
+
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "🗑️";
+  deleteBtn.title = "Delete Task";
+  deleteBtn.style.marginLeft = "10px";
+  deleteBtn.onclick = () => li.remove();
+
+  li.appendChild(taskSpan);
+  li.appendChild(completeBtn);
+  li.appendChild(editBtn);
+  li.appendChild(deleteBtn);
+
+  document.getElementById("taskList").appendChild(li);
+
+ 
+  document.getElementById("taskInput").value = "";
+  document.getElementById("taskDateTime").value = "";
+}
+
+  </script>
+
+</body>
+</html>
+
